@@ -1,0 +1,72 @@
+/* Elemente */
+html {
+    font-family: "Lucida Sans", sans-serif;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+li {
+    padding: 8px;
+    margin-bottom: 7px;
+    color: #000000;
+}
+body {
+    background-color: #33b5e5;
+}
+
+a {
+    background-color: #1de51d;
+    color: #000000;
+    text-decoration: none;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Klassen */
+.header {
+    background-color: #ad113a;
+    color: #ffffff;
+    padding: 15px;
+}
+
+.footer {
+    background-color: #51474a;
+    color: #ffffff;
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+.col-left {
+    width: 50%;
+    float: left;
+    padding: 20px;
+    color: #ffffff;
+}
+.col-right {
+    width: 50%;
+    float: left;
+    padding: 20px;
+    color: #ffffff;
+    
+}
+
+/* Bei schmalen Bildschirmen nur eine Spalte */
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    [class*="col-"] {
+        width: 100%;
+    }
+}
