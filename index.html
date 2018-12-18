@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<head>
+<style>
+button {
+    border: none;
+    color: black;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    width: 50%;
+    
+}
+	
+button:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+	
+
+#r {
+    background-color: #ff0404;
+}
+
+#y {
+    background-color: #fff033;
+}
+
+#g {
+    background-color: #5eff33;
+}
+
+#a {
+    background-color: #cbc3c3;
+}
+
+div {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  background-color: #c2dce8;
+}
+
+
+</style>
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TrafficLights</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+// user data
+var host="iot.eclipse.org"; 
+var port=443;
+// end user data
+
+
+var mqtt;
+var color;
+var reconnectTimeout = 2000;
+
+function onFailure(msg) {
+    $("p").css("color", "red");
+    $("p").html("Warte auf Server..."); 
+     setTimeout(MQTTconnect, reconnectTimeout);
+}
+
+function onConnect() {
+	console.log("Connected ");
+	message = new Paho.MQTT.Message(color);
+	message.destinationName = "MyTrafficLights";
+	mqtt.send(message);
+        $("p").css("color", "black");
+        $("p").append(" gesendet");
+    mqtt.disconnect();
+}
+
+function MQTTconnect() {
+	console.log("connecting to "+ host +" "+ port);
+    mqtt = new Paho.MQTT.Client(host,port,"clientjs");
+    var options = {
+	useSSL: true,
+	timeout: 3,
+	onSuccess: onConnect,
+        onFailure: onFailure,
+    };
+    mqtt.connect(options); 
+}
+
+$(document).ready(function(){
+    $("button").click(function(){
+        color = $(this).attr("id"); 
+        var text =  $(this).val();
+        $("p").css("color", "black");
+        $("p").html(text + " ....");
+        MQTTconnect();
+        
+    });
+});
+
+</script>    
+    
+</head>
+<body>
+    <h1>TrafficLights</h1>
+    <div>
+        <button id="r" type="submit" value="rot">rot</button>
+    </div>
+    <div>
+        <button id="y" type="submit" value="gelb">gelb</button>
+    </div>
+    <div>
+        <button id="g" type="submit" value="grün">grün</button>
+    </div>
+    <div>
+        <button id="a" type="submit" value="automatisch">automatisch</button>
+    </div>
+    <p id="status"></p>
+   
+</body>	
+</html>
